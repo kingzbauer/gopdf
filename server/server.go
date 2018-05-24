@@ -15,13 +15,6 @@ var (
 	DefaultTimeout time.Duration = time.Second * 20
 )
 
-type Target struct {
-	Repr  string `json:"repr"`
-	ID    string `json:"id"`
-	Type  string `json:"type"`
-	WsURL string `json:"websocket_url"`
-}
-
 func init() {
 	if err := cdp.InitCDP(context.TODO()); err != nil {
 		panic(err)

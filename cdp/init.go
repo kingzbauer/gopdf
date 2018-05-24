@@ -2,22 +2,16 @@ package cdp
 
 import (
 	"context"
-	"sync"
+	"os"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
-	"github.com/chromedp/chromedp/client"
 	"github.com/chromedp/chromedp/runner"
 	"github.com/fatih/color"
 )
 
-var (
-	CDP    *chromedp.CDP
-	lock   sync.Mutex
-	Client *client.Client
-	Pool   *chromedp.Pool
-)
+var Pool *chromedp.Pool
 
 type PDFOptions struct {
 	URL             string  `json:"url"`
@@ -106,7 +100,7 @@ func ShutdownCDP(ctx context.Context) error {
 
 func runnerOpts() []runner.CommandLineOption {
 	return []runner.CommandLineOption{
-		runner.ExecPath("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),
+		runner.ExecPath(os.Getenv("CHROME_BIN_PATH")),
 		runner.Flag("headless", true),
 		runner.Flag("no-sandbox", true),
 	}
