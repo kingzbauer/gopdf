@@ -25,6 +25,10 @@ type PDFOptions struct {
 	Landscape       bool    `json:"landscape"`
 	PaperSize       string  `json:"paper_size"`
 	Scale           float64 `json:"scale"`
+	// TargetElement is the element browser will wait to be visible before
+	// it attempts to generate pdf
+	TargetElement     string `json:"target_element"`
+	TargetElementType string `json:"target_element_type"` // e.g class or id
 }
 
 type PaperSize struct {
@@ -68,6 +72,12 @@ func GenPDF(ctx context.Context, pdfOptions *PDFOptions) ([]byte, error) {
 		WithPaperHeight(paperSize.Height).
 		WithScale(pdfOptions.Scale)
 
+	// set the query option
+	queryOption := chromedp.ByQueryAll
+	if pdfOptions.TargetElementType == "id" {
+		queryOption = chromedp.ByID
+	}
+
 	p, err := Pool.Allocate(ctx, runnerOpts()...)
 	defer p.Release()
 	if err != nil {
@@ -76,7 +86,7 @@ func GenPDF(ctx context.Context, pdfOptions *PDFOptions) ([]byte, error) {
 	var data []byte
 	tasks := chromedp.Tasks{
 		chromedp.Navigate(pdfOptions.URL),
-		chromedp.WaitVisible("h2.text-green-ct", chromedp.ByQuery),
+		chromedp.WaitVisible(pdfOptions.TargetElement, queryOption),
 		pdfWrapperFunc(&data, printToPDF),
 	}
 	err = p.Run(ctx, tasks)
