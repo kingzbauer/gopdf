@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"time"
 
 	"browserless/cdp"
 )
@@ -65,6 +65,7 @@ func GeneratePDF(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/pdf")
+	w.Header().Set("Content-Disposition", "attachment")
 	w.Write(data)
 }
