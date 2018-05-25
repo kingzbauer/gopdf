@@ -21,8 +21,12 @@ type PDFOptions struct {
 	Scale           float64 `json:"scale"`
 	// TargetElement is the element browser will wait to be visible before
 	// it attempts to generate pdf
-	TargetElement     string `json:"target_element"`
-	TargetElementType string `json:"target_element_type"` // e.g class or id
+	TargetElement     string  `json:"target_element"`
+	TargetElementType string  `json:"target_element_type"` // e.g class or id
+	MarginTop         float64 `json:"margin_top"`
+	MarginBottom      float64 `json:"margin_botom"`
+	MarginRight       float64 `json:"margin_right"`
+	MarginLeft        float64 `json:"margin_left"`
 }
 
 type PaperSize struct {
@@ -64,7 +68,11 @@ func GenPDF(ctx context.Context, pdfOptions *PDFOptions) ([]byte, error) {
 		WithPrintBackground(pdfOptions.PrintBackground).
 		WithPaperWidth(paperSize.Width).
 		WithPaperHeight(paperSize.Height).
-		WithScale(pdfOptions.Scale)
+		WithScale(pdfOptions.Scale).
+		WithMarginTop(pdfOptions.MarginTop).
+		WithMarginBottom(pdfOptions.MarginBottom).
+		WithMarginRight(pdfOptions.MarginRight).
+		WithMarginLeft(pdfOptions.MarginLeft)
 
 	// set the query option
 	queryOption := chromedp.ByQueryAll
