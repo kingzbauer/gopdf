@@ -4,9 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"os"
 	"time"
 
 	"browserless/cdp"
+
+	"github.com/go-http-utils/logger"
 )
 
 var (
@@ -24,7 +27,7 @@ func init() {
 func InitServer(addr string) *http.Server {
 	Mux = http.NewServeMux()
 	server = &http.Server{
-		Handler: Mux,
+		Handler: logger.Handler(Mux, os.Stdout, logger.CombineLoggerType),
 		Addr:    addr,
 	}
 
