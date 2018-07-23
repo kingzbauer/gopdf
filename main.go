@@ -12,51 +12,6 @@ import (
 	"browserless/server"
 )
 
-// type PDFWrapper struct {
-// 	params *page.PrintToPDFParams
-// 	data   []byte
-// }
-
-// func (p *PDFWrapper) Do(ctx context.Context, h cdp.Executor) error {
-// 	var err error
-// 	p.data, err = p.params.Do(ctx, h)
-// 	return err
-// }
-
-// func mains() {
-// 	ctx := context.Background()
-
-// 	runnerOpts := []runner.CommandLineOption{
-// 		runner.Flag("headless", true),
-// 		runner.Flag("no-sandbox", true),
-// 	}
-// 	cdp, err := chromedp.New(
-// 		ctx,
-// 		chromedp.WithRunnerOptions(runnerOpts...),
-// 	)
-// 	if err != nil {
-// 		fmt.Println("ERROR: ", err)
-// 		os.Exit(1)
-// 	}
-
-// 	printToPDF := page.PrintToPDF()
-// 	printToPDF = printToPDF.
-// 		WithLandscape(false).
-// 		WithPrintBackground(true).
-// 		WithHeaderTemplate("Jack")
-// 	pdf := &PDFWrapper{params: printToPDF}
-
-// 	tasks := chromedp.Tasks{
-// 		chromedp.Navigate("https://centrixt.mobisite.co.ke/invoice/1/doc/render/"),
-// 		chromedp.WaitVisible("div", chromedp.ByQueryAll),
-// 		pdf,
-// 	}
-
-// 	fmt.Println(cdp.Run(ctx, tasks))
-// 	ioutil.WriteFile("test.pdf", pdf.data, 0777)
-// 	fmt.Println(cdp.Shutdown(ctx))
-// }
-
 func main() {
 	defer func() {
 		fmt.Println("Shutting down...")
