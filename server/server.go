@@ -9,6 +9,7 @@ import (
 
 	"browserless/cdp"
 
+	"github.com/getsentry/raven-go"
 	"github.com/go-http-utils/logger"
 )
 
@@ -22,6 +23,8 @@ func init() {
 	if err := cdp.InitCDP(context.TODO()); err != nil {
 		panic(err)
 	}
+
+	//
 }
 
 func InitServer(addr string) *http.Server {
@@ -39,7 +42,7 @@ func InitServer(addr string) *http.Server {
 func initViews(mux *http.ServeMux) {
 	mux.Handle("/generate/pdf/", WrapHandlerFunc(
 		RequirePOST,
-		GeneratePDF,
+		raven.RecoveryHandler(GeneratePDF),
 	))
 }
 
